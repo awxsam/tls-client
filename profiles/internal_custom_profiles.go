@@ -1,6 +1,7 @@
 package profiles
 
 import (
+	"github.com/awxsam/tls-client/profiles"
 	"math"
 
 	"github.com/bogdanfinn/fhttp/http2"
@@ -210,4 +211,167 @@ func getMMSClientProfile3() ClientProfile {
 	}
 
 	return NewClientProfile(clientHelloId, settings, settingsOrder, pseudoHeaderOrder, 15663105, nil, nil)
+}
+
+var APP_1 = getApp1Profile()
+
+func getApp1Profile() profiles.ClientProfile {
+	settings := map[http2.SettingID]uint32{
+		http2.SettingInitialWindowSize:    2097152,
+		http2.SettingMaxConcurrentStreams: 100,
+	}
+	settingsOrder := []http2.SettingID{
+		http2.SettingInitialWindowSize,
+		http2.SettingMaxConcurrentStreams,
+	}
+	pseudoHeaderOrder := []string{
+		":method",
+		":scheme",
+		":path",
+		":authority",
+	}
+	connectionFlow := uint32(10485760)
+	specFactory := func() (tls.ClientHelloSpec, error) {
+		return tls.ClientHelloSpec{
+			CipherSuites: []uint16{
+				tls.GREASE_PLACEHOLDER, 4865, 4866, 4867, 49196, 49195, 52393, 49200, 49199, 52392, 49162, 49161, 49172, 49171,
+				157, 156, 53, 47, 49160, 49170, 10,
+			},
+			CompressionMethods: []uint8{tls.CompressionNone},
+			Extensions: []tls.TLSExtension{
+				&tls.UtlsGREASEExtension{},
+				&tls.SNIExtension{},
+				&tls.UtlsExtendedMasterSecretExtension{},
+				&tls.RenegotiationInfoExtension{Renegotiation: tls.RenegotiateOnceAsClient},
+				&tls.SupportedCurvesExtension{Curves: []tls.CurveID{
+					tls.CurveID(tls.GREASE_PLACEHOLDER),
+					tls.X25519,
+					tls.CurveP256,
+					tls.CurveP384,
+					tls.CurveP521,
+				}},
+				&tls.SupportedPointsExtension{SupportedPoints: []byte{0}},
+				&tls.ALPNExtension{AlpnProtocols: []string{"h2", "http/1.1"}},
+				&tls.StatusRequestExtension{},
+				&tls.SignatureAlgorithmsExtension{SupportedSignatureAlgorithms: []tls.SignatureScheme{
+					tls.ECDSAWithP256AndSHA256,
+					tls.PSSWithSHA256,
+					tls.PKCS1WithSHA256,
+					tls.ECDSAWithP384AndSHA384,
+					tls.ECDSAWithSHA1,
+					tls.PSSWithSHA384,
+					tls.PSSWithSHA384,
+					tls.PKCS1WithSHA384,
+					tls.PSSWithSHA512,
+					tls.PKCS1WithSHA512,
+					tls.PKCS1WithSHA1,
+				}},
+				&tls.SCTExtension{},
+				&tls.KeyShareExtension{KeyShares: []tls.KeyShare{
+					{Group: tls.CurveID(tls.GREASE_PLACEHOLDER), Data: []byte{0}},
+					{Group: tls.X25519},
+				}},
+				&tls.PSKKeyExchangeModesExtension{Modes: []uint8{tls.PskModeDHE}},
+				&tls.SupportedVersionsExtension{Versions: []uint16{
+					tls.GREASE_PLACEHOLDER,
+					tls.VersionTLS13,
+					tls.VersionTLS12,
+					tls.VersionTLS11,
+					tls.VersionTLS10,
+				}},
+				&tls.UtlsCompressCertExtension{Algorithms: []tls.CertCompressionAlgo{tls.CertCompressionZlib}},
+				&tls.UtlsGREASEExtension{},
+				&tls.UtlsPaddingExtension{GetPaddingLen: tls.BoringPaddingStyle},
+			},
+		}, nil
+	}
+	ccp := profiles.NewClientProfile(tls.ClientHelloID{
+		Client:      "iPhone",
+		Version:     "1",
+		Seed:        nil,
+		SpecFactory: specFactory,
+	}, settings, settingsOrder, pseudoHeaderOrder, connectionFlow, nil, nil)
+	return ccp
+}
+
+var APP_2 = getApp2Profile()
+
+func getApp2Profile() profiles.ClientProfile {
+	settings := map[http2.SettingID]uint32{
+		http2.SettingEnablePush:           0,
+		http2.SettingInitialWindowSize:    2097152,
+		http2.SettingMaxConcurrentStreams: 100,
+	}
+	settingsOrder := []http2.SettingID{
+		http2.SettingEnablePush,
+		http2.SettingInitialWindowSize,
+		http2.SettingMaxConcurrentStreams,
+	}
+	pseudoHeaderOrder := []string{
+		":method",
+		":scheme",
+		":path",
+		":authority",
+	}
+	connectionFlow := uint32(10485760)
+	specFactory := func() (tls.ClientHelloSpec, error) {
+		return tls.ClientHelloSpec{
+			CipherSuites: []uint16{
+				tls.GREASE_PLACEHOLDER, 4865, 4866, 4867, 49196, 49195, 52393, 49200, 49199, 52392, 49162, 49161, 49172, 49171,
+			},
+			CompressionMethods: []uint8{tls.CompressionNone},
+			Extensions: []tls.TLSExtension{
+				&tls.UtlsGREASEExtension{},
+				&tls.SNIExtension{},
+				&tls.UtlsExtendedMasterSecretExtension{},
+				&tls.RenegotiationInfoExtension{Renegotiation: tls.RenegotiateOnceAsClient},
+				&tls.SupportedCurvesExtension{Curves: []tls.CurveID{
+					tls.CurveID(tls.GREASE_PLACEHOLDER),
+					tls.X25519,
+					tls.CurveP256,
+					tls.CurveP384,
+					tls.CurveP521,
+				}},
+				&tls.SupportedPointsExtension{SupportedPoints: []byte{0}},
+				&tls.ALPNExtension{AlpnProtocols: []string{"h2", "http/1.1"}},
+				&tls.StatusRequestExtension{},
+				&tls.SignatureAlgorithmsExtension{SupportedSignatureAlgorithms: []tls.SignatureScheme{
+					tls.ECDSAWithP256AndSHA256,
+					tls.PSSWithSHA256,
+					tls.PKCS1WithSHA256,
+					tls.ECDSAWithP384AndSHA384,
+					tls.ECDSAWithSHA1,
+					tls.PSSWithSHA384,
+					tls.PSSWithSHA384,
+					tls.PKCS1WithSHA384,
+					tls.PSSWithSHA512,
+					tls.PKCS1WithSHA512,
+					tls.PKCS1WithSHA1,
+				}},
+				&tls.SCTExtension{},
+				&tls.KeyShareExtension{KeyShares: []tls.KeyShare{
+					{Group: tls.CurveID(tls.GREASE_PLACEHOLDER), Data: []byte{0}},
+					{Group: tls.X25519},
+				}},
+				&tls.PSKKeyExchangeModesExtension{Modes: []uint8{tls.PskModeDHE}},
+				&tls.SupportedVersionsExtension{Versions: []uint16{
+					tls.GREASE_PLACEHOLDER,
+					tls.VersionTLS13,
+					tls.VersionTLS12,
+				}},
+				&tls.UtlsCompressCertExtension{Algorithms: []tls.CertCompressionAlgo{tls.CertCompressionZlib}},
+				&tls.UtlsGREASEExtension{},
+				&tls.UtlsPaddingExtension{GetPaddingLen: tls.BoringPaddingStyle},
+			},
+		}, nil
+	}
+	ccp := profiles.NewClientProfile(tls.ClientHelloID{
+		Client:      "iPhone",
+		Version:     "1",
+		Seed:        nil,
+		SpecFactory: specFactory,
+	}, settings, settingsOrder, pseudoHeaderOrder, connectionFlow, []http2.Priority{}, &http2.PriorityParam{})
+	//}, settings, settingsOrder, pseudoHeaderOrder, connectionFlow, nil, nil)
+
+	return ccp
 }

@@ -51,6 +51,8 @@ var MappedTLSClients = map[string]ClientProfile{
 	"mms_ios_1":              MMSIos,
 	"mms_ios_2":              MMSIos2,
 	"mms_ios_3":              MMSIos3,
+	"app_1":                  APP_1,
+	"app_2":                  APP_2,
 	"mesh_ios":               MeshIos,
 	"mesh_ios_1":             MeshIos,
 	"mesh_ios_2":             MeshIos2,
