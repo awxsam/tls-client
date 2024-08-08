@@ -1,7 +1,6 @@
 package profiles
 
 import (
-	"github.com/awxsam/tls-client/profiles"
 	"math"
 
 	"github.com/bogdanfinn/fhttp/http2"
@@ -215,7 +214,7 @@ func getMMSClientProfile3() ClientProfile {
 
 var APP_1 = getApp1Profile()
 
-func getApp1Profile() profiles.ClientProfile {
+func getApp1Profile() ClientProfile {
 	settings := map[http2.SettingID]uint32{
 		http2.SettingInitialWindowSize:    2097152,
 		http2.SettingMaxConcurrentStreams: 100,
@@ -285,7 +284,7 @@ func getApp1Profile() profiles.ClientProfile {
 			},
 		}, nil
 	}
-	ccp := profiles.NewClientProfile(tls.ClientHelloID{
+	ccp := NewClientProfile(tls.ClientHelloID{
 		Client:      "iPhone",
 		Version:     "1",
 		Seed:        nil,
@@ -296,7 +295,7 @@ func getApp1Profile() profiles.ClientProfile {
 
 var APP_2 = getApp2Profile()
 
-func getApp2Profile() profiles.ClientProfile {
+func getApp2Profile() ClientProfile {
 	settings := map[http2.SettingID]uint32{
 		http2.SettingEnablePush:           0,
 		http2.SettingInitialWindowSize:    2097152,
@@ -365,7 +364,7 @@ func getApp2Profile() profiles.ClientProfile {
 			},
 		}, nil
 	}
-	ccp := profiles.NewClientProfile(tls.ClientHelloID{
+	ccp := NewClientProfile(tls.ClientHelloID{
 		Client:      "iPhone",
 		Version:     "1",
 		Seed:        nil,
